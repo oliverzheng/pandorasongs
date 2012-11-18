@@ -45,7 +45,7 @@ h1 {
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	overflow: scroll;
+	overflow: auto;
 	width: 100%;
 }
 #footer.expanded {
@@ -63,7 +63,6 @@ h1 {
 }
 #songs {
 	height: 100%;
-	overflow: scroll;
 }
 #header #input {
 	padding-top: 2px;
