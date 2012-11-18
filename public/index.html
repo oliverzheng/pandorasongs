@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Songs Liked on Pandora</title>
+		<link href="http://fonts.googleapis.com/css?family=PT+Sans+Narrow:700" rel="stylesheet" type="text/css" />
+		<link href="http://fonts.googleapis.com/css?family=PT+Sans:700" rel="stylesheet" type="text/css" />
+		<link href="styles.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript" src="spin.min.js"></script>
+		<script type="text/javascript" src="async.min.js"></script>
+		<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.1.0.js"></script>
+		<script type="text/javascript" src="app.js"></script>
+	</head>
+	<body>
+		<script type="text/html" id="mainTemplate">
+			<section id="header">
+				<h1>Songs You Liked on Pandora</h1>
+				<form id="input" data-bind="submit: load">
+					<div id="enter" data-bind="spin: loading">
+						<input type="submit" id="go" value="GO!" data-bind="visible: !loading()" tabindex="2" />
+					</div>
+					<input type="text" class="text" placeholder="Your username" data-bind="value: username" tabindex="1" />
+				</form>
+				<p id="what"><a href="#">What is my username?</a></p>
+			</section>
+			<section id="body">
+				<section id="content">
+					<div id="data">
+						<div class="options">
+							<p class="option">
+								<a href="#" data-bind="css: {
+										selected: groupBy() === GROUP_BY.STATION
+									}, click: groupByStation">
+									<span data-bind="visible: loading, text: loadedStations().length + '/'"></span><span data-bind="text: stations().length"></span>
+									stations
+								</a> /
+								<a href="#" data-bind="css: {
+										selected: groupBy() === GROUP_BY.SONG
+									}, click: groupBySong">
+									<span data-bind="text: allSongs().length"></span> songs
+								</a>
+							</p>
+							<p class="option">Sort:
+								<a href="#" data-bind="css: {
+										selected: sortBy() === SORT_BY.ARTIST
+									}, click: sortByArtist">Artist</a> /
+								<a href="#" data-bind="css: {
+										selected: sortBy() === SORT_BY.DATE
+									}, click: sortByDate">Date liked</a>
+							</p>
+						</div>
+						<div id="songs">
+							<!-- ko if: groupBy() === GROUP_BY.STATION -->
+								<ul data-bind="foreach: stations">
+									<li>
+										<div class="stationName" data-bind="text: name"></div>
+										<ul data-bind="foreach: sortedSongs">
+											<!-- ko template: 'songTemplate' --><!-- /ko -->
+										</ul>
+									</li>
+								</ul>
+							<!-- /ko -->
+							<!-- ko if: groupBy() === GROUP_BY.SONG -->
+								<ul data-bind="foreach: allSongs">
+									<!-- ko template: 'songTemplate' --><!-- /ko -->
+								</ul>
+							<!-- /ko -->
+						</div>
+					</div>
+				</section>
+				<section id="footer" data-bind="expand: {enable: expand, opened: opened}, css: {'expanded': opened}">
+					<p>Questions?<br />
+					<a href="http://twitter.com/oliverzheng">@oliverzheng</a></p>
+				</section>
+			</section>
+		</script>
+
+		<script type="text/html" id="songTemplate">
+			<li>
+				<span class="artist" data-bind="text: artist"></span> -
+				<span class="title" data-bind="text: title"></span>
+			</li>
+		</script>
+
+		<div data-bind="template: 'mainTemplate'">
+		</div>
+	</body>
+</html>

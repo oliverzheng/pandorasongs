@@ -1,0 +1,15 @@
+{
+	"name": "pandorasongs",
+	"description": "List songs liked on Pandora",
+	"version": "0.0.1",
+	"private": true,
+	"engines": {
+		"node": "0.8.x",
+		"npm": "1.1.x"
+	},
+	"dependencies": {
+		"request": "2.11.x",
+		"libxmljs": "0.6.x",
+		"express": "3.x"
+	}
+}

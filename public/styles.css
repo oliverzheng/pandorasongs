@@ -1,0 +1,160 @@
+html, body {
+	padding: 0;
+	margin: 0;
+	height: 100%;
+}
+body {
+	font-family: Verdana;
+	color: rgba(255, 255, 255, 0.8);
+	font-size: 12px;
+	line-height: 1.5em;
+}
+h1 {
+	font-family: 'PT Sans Narrow', sans-serif;
+	text-align: center;
+	color: #EEE;
+	text-shadow: 0px 0px 5px rgba(0,0,0,0.5);
+	font-size: 30px;
+	margin: 0 0 70px 0;
+	padding-top: 60px;
+}
+#header {
+	height: 256px;
+}
+#header, #footer {
+	background: #07315b url('bg_bubbles.png') no-repeat;
+	text-align: center;
+	width: 100%;
+}
+#header  {
+	background-position: center 0px;
+}
+#footer {
+	background-position: center -256px;
+}
+#body {
+	position: absolute;
+	top: 256px;
+	bottom: 80px;
+	width: 100%;
+}
+#content {
+	box-shadow: inset 0 5px 20px -5px rgba(0, 0, 0, 1);
+	z-index: 0;
+	background: url('bg_linen.png') repeat;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	overflow: scroll;
+	width: 100%;
+}
+#footer.expanded {
+	border-color: rgba(255, 255, 255, 0.2);
+}
+#footer {
+	border-top: 1px solid transparent;
+	box-sizing: border-box;
+	position: absolute;
+	z-index: 1;
+	padding-top: 10px;
+	overflow: hidden;
+	top: 0%;
+	bottom: -80px;
+}
+#songs {
+	height: 100%;
+	overflow: scroll;
+}
+#header #input {
+	padding-top: 2px;
+	text-align: center;
+	width: 180px;
+	background: rgba(255, 255, 255, 0.1);
+	height: 28px;
+	box-shadow: inset 0 2px 3px 0 rgba(0,0,0,0.3);
+	border-bottom: 1px solid rgba(255,255,255,0.2);
+	color: white;
+	font-size: 15px;
+	margin: 0 auto;
+}
+#header input.text {
+	font-family: 'PT Sans', sans-serif;
+	background: 0;
+	border: 0;
+	text-align: center;
+	width: 140px;
+	color: white;
+	font-size: 15px;
+	height: 28px;
+	line-height: 28px;
+	padding: 0;
+}
+#header input::-webkit-input-placeholder, #header input::-moz-placeholder, #header input::-ms-input-placeholder {
+	color: rgba(255,255,255,0.7);
+}
+a {
+	color: white;
+	text-decoration: none;
+	border-bottom: 1px dashed rgba(255, 255, 255, 0.5);
+}
+a:hover {
+	border-bottom-style: solid;
+}
+#header #enter {
+	height: 28px;
+	width: 32px;
+	float: right;
+}
+#header #go {
+	background: transparent;
+	color: white;
+	font-family: 'PT Sans Narrow', sans-serif;
+	font-size: 15px;
+	font-weight: bold;
+	border: 0;
+	height: 28px;
+	width: 32px;
+	line-height: 26px;
+	cursor: pointer;
+}
+#what {
+	opacity: 0.6;
+}
+
+#data {
+	width: 360px;
+	margin: 30px auto;
+	font-weight: normal;
+	line-height: 1.7em;
+}
+
+#data, #data a {
+	color: #CCC;
+}
+
+#data a.selected {
+	color: #FFF;
+	border: 0;
+	cursor: default;
+}
+
+.options {
+	text-align: center;
+}
+
+.option {
+	display: inline-block;
+	margin-right: 10px;
+}
+
+#data ul, #data li {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+#data .stationName {
+	color: white;
+	border-bottom: 1px solid rgba(255,255,255,0.4);
+	margin: 5px 0 2px 0;
+}
