@@ -120,7 +120,7 @@ function MainVM() {
 	}, this);
 
 	this.load = function() {
-		if (this.loading())
+		if (this.loading() || this.username() === '')
 			return;
 
 		this.loading(true);
@@ -135,17 +135,20 @@ function MainVM() {
 			});
 			self.stations(stations);
 
-			async.series(stations.map(function(station) {
-				return function(cb) {
-					server.getSongs(station.id, function(songs) {
-						station.songs(songs);
-						station.loaded(true);
-						cb(null);
-					});
-				};
-			}), function(error) {
+			if (stations.length === 0)
 				self.loading(false);
-			})
+			else
+				async.series(stations.map(function(station) {
+					return function(cb) {
+						server.getSongs(station.id, function(songs) {
+							station.songs(songs);
+							station.loaded(true);
+							cb(null);
+						});
+					};
+				}), function(error) {
+					self.loading(false);
+				});
 		});
 	};
 
