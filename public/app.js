@@ -223,4 +223,6 @@ $(function() {
 	mixpanel.track('Home landing');
 
 	ko.applyBindings(new MainVM());
+
+	$('input').placeholder();
 });
