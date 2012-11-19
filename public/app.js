@@ -40,54 +40,29 @@ function Song(id, artist, title, dateLiked) {
 }
 
 
-var appServer = {
+var server = {
 	getStations: function(username, cb) {
 		$.getJSON('/username/' + username, function(data) {
-			if (data.success) {
-				cb(data.stations.map(function(station) {
-					return new Station(station.stationId, station.stationName);
-				}));
-			}
+			if (!data.success)
+				return mixpanel.track('Stations error', { username: username });
+
+			cb(data.stations.map(function(station) {
+				return new Station(station.stationId, station.stationName);
+			}));
 		});
 	},
 
 	getSongs: function(stationId, cb) {
 		$.getJSON('/station/' + stationId, function(data) {
-			if (data.success) {
-				cb(data.songs.map(function(song) {
-					return new Song(song.link, song.artist, song.title, parseInt(song.date));
-				}));
-			}
+			if (!data.success)
+				return mixpanel.track('Songs error', { stationId: stationId });
+
+			cb(data.songs.map(function(song) {
+				return new Song(song.link, song.artist, song.title, parseInt(song.date));
+			}));
 		});
 	}
 };
-
-var mockServer = {
-	getStations: function(username, cb) {
-		setTimeout(function() {
-			cb([new Station('1', 'station1'), new Station('2', 'station2')]);
-		}, 0);
-	},
-
-	getSongs: function(stationId, cb) {
-		setTimeout(function() {
-			if (stationId === '1') {
-				cb([
-				   new Song('1', 'Drake', 'Forever'),
-				   new Song('2', 'Drake', 'Best I Ever Had'),
-				   new Song('3', 'Swollen Members', 'Fuel Injected')
-				]);
-			} else {
-				cb([
-				   new Song('1', 'Drake', 'Forever'),
-				   new Song('5', 'Swollen Members', 'Deep End')
-				]);
-			}
-		}, 1000);
-	}
-};
-
-var server = appServer;
 
 
 function MainVM() {
@@ -123,6 +98,9 @@ function MainVM() {
 		if (this.loading() || this.username() === '')
 			return;
 
+		var startTime = (new Date()).getTime();
+		mixpanel.track('Stations loading');
+
 		this.loading(true);
 
 		if (!this.expand())
@@ -130,6 +108,9 @@ function MainVM() {
 
 		var self = this;
 		server.getStations(this.username(), function(stations) {
+
+			mixpanel.track('Stations loaded', { count: stations.length });
+
 			stations.sort(function(a, b) {
 				return a.name.localeCompare(b.name);
 			});
@@ -141,12 +122,21 @@ function MainVM() {
 				async.series(stations.map(function(station) {
 					return function(cb) {
 						server.getSongs(station.id, function(songs) {
+
+							mixpanel.track('Songs loaded', { count: songs.length });
+
 							station.songs(songs);
 							station.loaded(true);
 							cb(null);
 						});
 					};
 				}), function(error) {
+					if (error)
+						mixpanel.track('Error', error);
+
+					var endTime = (new Date()).getTime();
+					mixpanel.track('Load time', { duration: endTime - startTime });
+
 					self.loading(false);
 				});
 		});
@@ -230,5 +220,7 @@ ko.bindingHandlers.expand = {
 
 
 $(function() {
+	mixpanel.track('Home landing');
+
 	ko.applyBindings(new MainVM());
 });
