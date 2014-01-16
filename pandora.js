@@ -13,10 +13,8 @@ var libxml = require('libxmljs');
 // Pandora, I'm not trying to steal your music. Just let me look at my stations.
 var at = 'wnb300BmFVHfJjjFZo/ISxvXK+OFmuiaA';
 
-function getSomeSongs(stationId, songs, cb) {
-	songs = songs || [];
-
-	var stationUrl = 'http://www.pandora.com/content/station_track_thumbs?stationId=' + stationId + '&posFeedbackStartIndex=' + songs.length + '&posSortAsc=false&posSortBy=date';
+function getSomeSongs(stationId, startIndex, cb) {
+	var stationUrl = 'http://www.pandora.com/content/station_track_thumbs?stationId=' + stationId + '&posFeedbackStartIndex=' + startIndex + '&posSortAsc=false&posSortBy=date';
 
 	request(stationUrl, function(error, response, body) {
 		if (error || response.statusCode !== 200)
@@ -25,13 +23,13 @@ function getSomeSongs(stationId, songs, cb) {
 		if (!/\S/.test(body)) {
 			// Stations without any liked songs return empty responses,
 			// which confuses the html parser...
-			return cb(null, []);
+			return cb(null, {songs: [], hasMore: false});
 		}
 
 		var html = libxml.parseHtmlString(body);
 		var children = html.get('//body').childNodes();
 
-		var newSongs = children.filter(function(child) {
+		var songs = children.filter(function(child) {
 			return child.name() === 'li';
 		}).map(function(li) {
 			var a = li.get('div/div/h3/a');
@@ -42,12 +40,11 @@ function getSomeSongs(stationId, songs, cb) {
 				link: a.attr('href').value()
 			};
 		});
-		songs.push.apply(songs, newSongs);
 
-		if (!html.get('//div[@class="no_more"]'))
-			return getSomeSongs(stationId, songs, cb);
+		if (html.get('//div[@class="no_more"]'))
+			cb(null, {songs: songs, hasMore: false});
 		else
-			cb(null, songs);
+			cb(null, {songs: songs, hasMore: true});
 	});
 };
 
@@ -89,8 +86,8 @@ getSomeStations = function(username, stations, cb) {
 };
 
 
-exports.getSongs = function(stationId, cb) {
-	return getSomeSongs(stationId, null, cb);
+exports.getSongs = function(stationId, startIndex, cb) {
+	return getSomeSongs(stationId, startIndex, cb);
 };
 
 exports.getStations = function(username, cb) {

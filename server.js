@@ -10,13 +10,14 @@ app.configure(function() {
 	app.use(express.static(path.join(__dirname, 'public')));
 });
 
-app.get('/station/:stationId', function(req, res) {
+app.get('/station/:stationId/:startIndex', function(req, res) {
 	var stationId = req.params.stationId;
-	pandora.getSongs(stationId, function(error, songs) {
+	var startIndex = req.params.startIndex;
+	pandora.getSongs(stationId, startIndex, function(error, result) {
 		if (error)
 			res.json({ success: false });
 		else
-			res.json({ success: true, songs: songs });
+			res.json({ success: true, songs: result.songs, hasMore: result.hasMore });
 	});
 });
 

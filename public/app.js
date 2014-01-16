@@ -52,14 +52,15 @@ var server = {
 		});
 	},
 
-	getSongs: function(stationId, cb) {
-		$.getJSON('/station/' + stationId, function(data) {
+	getSongs: function(stationId, startIndex, cb) {
+		$.getJSON('/station/' + stationId + '/' + startIndex, function(data) {
 			if (!data.success)
 				return mixpanel.track('Songs error', { stationId: stationId });
 
+			console.log('got back', stationId, startIndex, data);
 			cb(data.songs.map(function(song) {
 				return new Song(song.link, song.artist, song.title, parseInt(song.date));
-			}));
+			}), data.hasMore);
 		});
 	}
 };
@@ -119,16 +120,20 @@ function MainVM() {
 			if (stations.length === 0)
 				self.loading(false);
 			else
-				async.series(stations.map(function(station) {
+				async.parallel(stations.map(function(station) {
 					return function(cb) {
-						server.getSongs(station.id, function(songs) {
-
+						function serverCallback(songs, hasMore) {
 							mixpanel.track('Songs loaded', { count: songs.length });
 
-							station.songs(songs);
-							station.loaded(true);
-							cb(null);
-						});
+							station.songs(station.songs().concat(songs));
+							if (hasMore) {
+								server.getSongs(station.id, station.songs().length, serverCallback);
+							} else {
+								station.loaded(true);
+								cb(null);
+							}
+						}
+						server.getSongs(station.id, 0, serverCallback);
 					};
 				}), function(error) {
 					if (error)
