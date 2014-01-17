@@ -5,12 +5,14 @@
 		<link href="http://fonts.googleapis.com/css?family=PT+Sans+Narrow:700" rel="stylesheet" type="text/css" />
 		<link href="http://fonts.googleapis.com/css?family=PT+Sans:700" rel="stylesheet" type="text/css" />
 		<link href="styles.css" rel="stylesheet" type="text/css" />
+		<link href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 		<script type="text/javascript" src="jquery.placeholder.min.js"></script>
 		<script type="text/javascript" src="es5-shim.min.js"></script>
 		<script type="text/javascript" src="spin.min.js"></script>
 		<script type="text/javascript" src="async.min.js"></script>
 		<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.1.0.js"></script>
+		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
 		<script type="text/javascript" src="app.js"></script>
 		<script type="text/javascript" src="tracking.js"></script>
 	</head>
@@ -24,7 +26,13 @@
 					</div>
 					<input type="text" class="text" placeholder="Your username" data-bind="value: username" tabindex="1" />
 				</form>
-				<p id="what"><a href="#">What is my username?</a></p>
+				<p id="what">
+					<a
+						href="username.png"
+						title="Your username is the last part of your profile URL. Make sure your profile is public.">
+						What is my username?
+					</a>
+				</p>
 			</section>
 			<section id="body">
 				<section id="content">
@@ -87,5 +95,7 @@
 
 		<div data-bind="template: 'mainTemplate'">
 		</div>
+
+		<script>$(function() {$('#what a').fancybox();});</script>
 	</body>
 </html>
