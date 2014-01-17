@@ -61,7 +61,10 @@ getSomeStations = function(username, stations, cb) {
 			return cb({reason: 'pandora'});
 
 		var html = libxml.parseHtmlString(body);
-		var children = html.get('//div[@id="stations_container"]').childNodes();
+		var stations_container = html.get('//div[@id="stations_container"]');
+		if (!stations_container)
+			return cb({reason: 'no_stations'});
+		var children = stations_container.childNodes();
 
 		var newStations = children.filter(function(child) {
 			return child.name() !== 'text' && child.attr('class').value() === 'section clearfix';

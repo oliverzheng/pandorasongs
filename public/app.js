@@ -57,7 +57,6 @@ var server = {
 			if (!data.success)
 				return mixpanel.track('Songs error', { stationId: stationId });
 
-			console.log('got back', stationId, startIndex, data);
 			cb(data.songs.map(function(song) {
 				return new Song(song.link, song.artist, song.title, parseInt(song.date));
 			}), data.hasMore);
