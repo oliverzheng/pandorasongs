@@ -54,7 +54,7 @@ getSomeStations = function(username, stations, cb) {
 	var stationsUrl = 'http://www.pandora.com/content/stations?startIndex=' + stations.length + '&webname=' + username;
 
 	var jar = request.jar();
-	jar.add(request.cookie('at=' + at));
+	jar.setCookie(request.cookie('at=' + at), stationsUrl);
 
 	request({url: stationsUrl, jar: jar}, function(error, response, body) {
 		if (error || response.statusCode !== 200)
