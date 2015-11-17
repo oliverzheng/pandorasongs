@@ -12,7 +12,7 @@ if (track) {
 	mixpanel.init("a35198c8b561e09b16fe10afa4f4e338");
 
 	var _gaq = _gaq || [];
-	_gaq.push(['_setAccount', 'UA-35457634-3']);
+	_gaq.push(['_setAccount', 'UA-36526332-3']);
 	_gaq.push(['_trackPageview']);
 
 	(function() {
