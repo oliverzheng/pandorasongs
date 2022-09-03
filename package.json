@@ -3,13 +3,15 @@
 	"description": "List songs liked on Pandora",
 	"version": "0.0.1",
 	"private": true,
+	"scripts": {
+		"server": "node server.js"
+	},
 	"engines": {
-		"node": "4.2.x",
-		"npm": "2.14.x"
+		"node": "17.9.x"
 	},
 	"dependencies": {
 		"request": "2.65.x",
-		"libxmljs": "0.15.x",
+		"libxmljs": "0.19.x",
 		"express": "3.x"
 	}
 }
