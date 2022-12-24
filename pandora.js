@@ -1,5 +1,5 @@
 var request = require('request');
-var libxml = require('libxmljs');
+var libxml = require('libxmljs2');
 
 // Authentication token to use to get the list of stations. The cookie set by
 // Pandora expires at 30 days. Let's see how long this lasts us. This token was
